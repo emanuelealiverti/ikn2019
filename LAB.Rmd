@@ -8,11 +8,10 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::read_chunk("~/GIT/ikn2019/lab1.R")
 ```
 
-Procediamo con la lettura dei dati.
-Il dataset si riferisce ai consumi di energia elettrica di un campione di clienti.
+Il dataset si riferisce ai consumi di energia elettrica di un campione di clienti domestici.
 Scopo delle analisi è quello di prevedere il consumo di Febbraio sulla base dei mesi precedenti.
 
-Procediamo con la lettura dei dati
+Procediamo con la lettura dei dati.
 ```{r data,message=F}
 ```
 
@@ -21,7 +20,7 @@ Procediamo con la lettura dei dati
 ```{r pack,message=F}
 ```
 Rimuoviamo ora i dati mancati e creiamo un'altra variabile risposta il cui valore è $log(FEB)$ in caso di consumi positivi e $0$ in caso di consumi nulli.
-Rimuoviamo poi le variabili che non utilizzeremo per le analisi.
+Rimuoviamo poi le variabili che non utilizzeremo per le analisi, come l'indicatore del consumo e l'id utente.
 
 ```{r preproc}
 ```
@@ -32,8 +31,15 @@ Dividiamo i dati in insieme di stima ed insieme di verifica.
 
 Procediamo quindi con la stima di un albero di regressione per prevedere in consumo di febbraio in funzione dei consumi passati.
 
+Un problema cruciale consiste nella scelta della dimensione ottimale dell'albero, per bilanciare il compromesso tra varianza e distorsione. Per fare questo, è possibile 
+- utilizzare due insieme di dati, utilizzando una parte per la stima e una parte per la regolazione
+- utilizzare un unico insieme di dati, e procedere tramite convalida incrociata.
+
+Utilizzeremo il secondo approccio.
+
 ```{r albero}
 ```
+Gli alberi di regressione permettono un'interpretazione molto agevole, con previsioni ottenibili sulla base di scelte binarie del tipo "Sì, vado a sinistra" e "No, vado a destra", ad ogni split.
 
 Nel file `lab1.R` è contenuto tutto il codice per riprodurre questi risultati ed estendere le analisi a modelli di tipo bagging e foreste casuali.
 Il file `lab2.R` effettua delle analisi simili utilizzando le reti neurali.

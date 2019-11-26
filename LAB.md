@@ -2,12 +2,11 @@ Previsione di domanda e prezzo di elettricità e gas per mezzo di modelli
 di machine learning
 ================
 
-Procediamo con la lettura dei dati. Il dataset si riferisce ai consumi
-di energia elettrica di un campione di clienti. Scopo delle analisi è
-quello di prevedere il consumo di Febbraio sulla base dei mesi
-precedenti.
+Il dataset si riferisce ai consumi di energia elettrica di un campione
+di clienti domestici. Scopo delle analisi è quello di prevedere il
+consumo di Febbraio sulla base dei mesi precedenti.
 
-Procediamo con la lettura dei dati
+Procediamo con la lettura dei dati.
 
 ``` r
 rm(list=ls())
@@ -35,7 +34,7 @@ new_hour[day_cat >= 19] = "sera"
 Rimuoviamo ora i dati mancati e creiamo un’altra variabile risposta il
 cui valore è \(log(FEB)\) in caso di consumi positivi e \(0\) in caso di
 consumi nulli. Rimuoviamo poi le variabili che non utilizzeremo per le
-analisi.
+analisi, come l’indicatore del consumo e l’id utente.
 
 ``` r
 dat$day_cat = factor(new_hour)
@@ -69,8 +68,22 @@ NROW(dat)
 Procediamo quindi con la stima di un albero di regressione per prevedere
 in consumo di febbraio in funzione dei consumi passati.
 
+Un problema cruciale consiste nella scelta della dimensione ottimale
+dell’albero, per bilanciare il compromesso tra varianza e distorsione.
+Per fare questo, è possibile - utilizzare due insieme di dati,
+utilizzando una parte per la stima e una parte per la regolazione -
+utilizzare un unico insieme di dati, e procedere tramite convalida
+incrociata.
+
+Utilizzeremo il secondo approccio.
+
 ``` r
 require(tree)
+```
+
+    ## Loading required package: tree
+
+``` r
 f0 = as.formula(paste0("FEB~",paste0(names(dat_stima)[2:6], collapse = "+")))
 
 # Comando di base
@@ -102,6 +115,10 @@ p0 = predict(m_final,dat_verifica)
 ```
 
     ## [1] 0.02185855
+
+Gli alberi di regressione permettono un’interpretazione molto agevole,
+con previsioni ottenibili sulla base di scelte binarie del tipo “Sì,
+vado a sinistra” e “No, vado a destra”, ad ogni split.
 
 Nel file `lab1.R` è contenuto tutto il codice per riprodurre questi
 risultati ed estendere le analisi a modelli di tipo bagging e foreste
